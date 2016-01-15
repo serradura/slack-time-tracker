@@ -1,0 +1,14 @@
+# rubocop:disable all
+
+FactoryGirl.define do
+  # PARAMETERS = {"token"=>"", "team_id"=>"", "team_domain"=>"", "channel_id"=>"", "channel_name"=>"", "user_id"=>"", "user_name"=>"", "command"=>"/tt", "text"=>"", "response_url"=>""}
+  #
+  # factory :slack_payload_simulator, parent: :slack_payload do
+  #   team_id PARAMETERS["team_id"]
+  #   team_domain PARAMETERS["team_domain"]
+  #   channel_id PARAMETERS["channel_id"]
+  #   channel_name PARAMETERS["channel_name"]
+  #   user_id PARAMETERS["user_id"]
+  #   user_name PARAMETERS["user_name"]
+  # end
+end
