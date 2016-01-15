@@ -33,6 +33,11 @@ bundle exec rails s webrick
 # In another terminal tab/window.
 # Start guard
 bundle exec guard
+
+# After change something or create a new behaviour/feature, execute:
+bundle exec rubycritic app lib
+# and open the code quality report
+# open tmp/rubycritic/overview.html
 ```
 
 ## Deployment
