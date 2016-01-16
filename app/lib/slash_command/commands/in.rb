@@ -10,6 +10,7 @@ module SlashCommand
 
       EMPTY_NOTE_MSG = "You need a note to this activity!"
       NEW_ACTIVITY_CREATED = "A new activity entry was created!"
+      STOPED_LAST_CREATED_NEW = "The last activity was stoped and new one started!"
 
       def self.description
         "This command will start a new activity.".freeze
@@ -24,13 +25,19 @@ module SlashCommand
       def result
         return EMPTY_NOTE_MSG if data.blank?
         return HELP if help?
-        result_with_activity
+        return result_with_activity
       end
 
       def result_with_activity
+        message = NEW_ACTIVITY_CREATED
+
+        if user.stop_running_activity
+          message = STOPED_LAST_CREATED_NEW
+        end
+
         user.time_entries.create(date: Date.current, start: Time.current, note: data)
 
-        NEW_ACTIVITY_CREATED
+        message
       end
     end
   end
