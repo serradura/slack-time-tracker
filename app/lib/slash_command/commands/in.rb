@@ -3,9 +3,17 @@
 module SlashCommand
   module Commands
     class In < Template
-      HELP = "This command will start a new activity."
+      HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
+        Start the timer for the current timesheet.
+        usage: `/tt in [NOTE]`
+      COMMAND_DESCRIPTION
+
       EMPTY_NOTE_MSG = "You need a note to this activity!"
       NEW_ACTIVITY_CREATED = "A new activity entry was created!"
+
+      def self.description
+        "This command will start a new activity.".freeze
+      end
 
       def call
         response.result = result
