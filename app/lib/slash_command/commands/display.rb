@@ -4,7 +4,7 @@ module SlashCommand
   module Commands
     class Display < Template
       HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
-        Show all activities in history. Usage: `/tt in [NOTE]`
+        Show all activities in history. Usage: `/tt display`
       COMMAND_DESCRIPTION
 
       LIMIT = 50
