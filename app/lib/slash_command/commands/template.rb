@@ -3,9 +3,12 @@ module SlashCommand
     class Template
       attr_reader :payload, :response
 
-      def initialize(payload)
+      delegate :name, :help?, :data, to: :@parsed_command
+
+      def initialize(payload, parsed_command)
         @payload = payload
         @response = SlashCommand::Response.new
+        @parsed_command = parsed_command
       end
 
       def call

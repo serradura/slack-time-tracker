@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SlashCommand
-  class ArgumentsParser
+  class CommandParser
     EMPTY_SPACE = " "
     ANY_SPACE_PATTERN = /\s+/.freeze
 
@@ -14,12 +14,16 @@ module SlashCommand
       end
     end
 
-    def command
-      @command ||= get(0).tap(&:downcase!)
+    def name
+      @name ||= get(0).tap(&:downcase!)
     end
 
     def data
       get(1)
+    end
+
+    def help?
+      data.tap(&:downcase!).include? "help"
     end
 
     private

@@ -13,15 +13,17 @@ module SlashCommand
 
     def initialize(params)
       @payload = Payload.new(params)
+      @validator = PayloadValidator.new(@payload)
+      @parsed_command = CommandParser.new(params[:text])
     end
 
     def command
-      handler = @payload.valid? ? find_command : Commands::TokenError
-      handler.new(@payload)
+      strategy = @validator.ok? ? find_command : Commands::TokenError
+      strategy.new(@payload, @parsed_command)
     end
 
     def find_command
-      COMMANDS.fetch(@payload.command, Commands::Unknown)
+      COMMANDS.fetch(@parsed_command.name, Commands::Unknown)
     end
   end
 end

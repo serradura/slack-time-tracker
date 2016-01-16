@@ -6,7 +6,7 @@ module SlashCommand
       @payload = payload
     end
 
-    def valid?
+    def ok?
       @payload.token == VALID_TOKEN
     end
   end
