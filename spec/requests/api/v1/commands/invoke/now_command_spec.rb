@@ -15,9 +15,10 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
       it "responds with no current activity message" do
         expected_message = SlashCommand::Commands::Now::NO_CURRENT_ACTIVITY
+
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
-        expect(current_user.has_activity_running?).to be false
+        expect(current_user.running_activity?).to be_falsey
       end
     end
 
@@ -36,6 +37,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
       it "responds with activity message" do
         expected_message = "test"
+
         expect(response).to have_http_status(200)
         expect(response.body).to include expected_message
       end
