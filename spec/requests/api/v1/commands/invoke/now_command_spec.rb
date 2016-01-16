@@ -36,10 +36,8 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       end
 
       it "responds with activity message" do
-        expected_message = "test"
-
         expect(response).to have_http_status(200)
-        expect(response.body).to include expected_message
+        expect(response.body).to match match(/(\d{2}:){2}\d{2}/)
       end
     end
 
