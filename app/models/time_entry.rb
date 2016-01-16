@@ -9,16 +9,12 @@ class TimeEntry < ActiveRecord::Base
     "#{diff} - #{note}"
   end
 
-  # time_entry.date.to_formatted_s(:long)
-  # time_entry.start.strftime("%H:%M:%S")
-  # TimeDiffer.between(time_entry.start, time_entry.end || Time.current)
-  # time_entry.note
   def to_display
-	entryDate = date.to_formatted_s(:long)
-	entryStart = start.strftime("%H:%M:%S")
-	entryEnd = (self.end || Time.current).try(:strftime, "%H:%M:%S")
-	entryTimeRange = TimeDiffer.between(start, self.end || Time.current)
-	entryNote = note
-	"#{entryDate}\t\t|\t#{entryStart}\t\t|\t#{entryEnd}\t\t|\t#{entryTimeRange}\t\t|\t#{entryNote}"
+    date = self.date.to_formatted_s(:long)
+    start_time = start.strftime("%H:%M:%S")
+    end_time   = (self.end || Time.current).try(:strftime, "%H:%M:%S")
+    time_diff  = TimeDiffer.between(start, self.end || Time.current)
+
+    "#{date}\t\t|\t#{start_time}\t\t|\t#{end_time}\t\t|\t#{time_diff}\t\t|\t#{note}"
   end
 end

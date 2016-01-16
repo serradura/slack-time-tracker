@@ -25,15 +25,16 @@ module SlashCommand
       def result
         return EMPTY_NOTE_MSG if data.blank?
         return HELP if help?
+
         result_with_activity
       end
 
       def result_with_activity
-        message = NEW_ACTIVITY_CREATED
-
-        if user.stop_running_activity
-          message = STOPED_LAST_CREATED_NEW
-        end
+        message = if user.stop_running_activity
+                    STOPED_LAST_CREATED_NEW
+                  else
+                    NEW_ACTIVITY_CREATED
+                  end
 
         user.time_entries.create(date: Date.current, start: Time.current, note: data)
 

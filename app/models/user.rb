@@ -30,6 +30,6 @@ class User < ActiveRecord::Base
   end
 
   def stop_running_activity
-    running_activity&.update_attribute(:end, Time.current)
+    running_activity.try(:update_attribute, :end, Time.current)
   end
 end

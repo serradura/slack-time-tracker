@@ -31,7 +31,7 @@ module SlashCommand
       end
 
       def recent_time_entries_header
-        "\t\tDate\t\t|\t\tStart\t\t|\t\tEnd\t\t|\t\tRange\t\t|\t\tNote" 
+        "\t\tDate\t\t|\t\tStart\t\t|\t\tEnd\t\t|\t\tRange\t\t|\t\tNote"
       end
 
       def recent_time_entries_body
@@ -43,7 +43,7 @@ module SlashCommand
 
       def recent_time_entries
         user.time_entries.order(date: :desc, start: :asc).limit(50)
-      end      
+      end
     end
   end
 end
