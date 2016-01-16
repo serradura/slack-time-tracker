@@ -4,7 +4,8 @@ module SlashCommand
   class Invoke
     COMMANDS = {
       "when" => Commands::When,
-      "what" => Commands::What
+      "what" => Commands::What,
+      "in"   => Commands::In
     }.freeze
 
     def self.command_with(params)
