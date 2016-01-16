@@ -14,7 +14,7 @@ module SlashCommand
 
       COMMAND_NOT_VALID = "This command is not valid. Use `/tt kill current`"
 
-      ACTIVITY_NOT_RUNNING_MSG = "You are doing nothing right now, you lazy! :stuck_out_tongue_closed_eyes:"
+      ACTIVITY_NOT_RUNNING_MSG = "There’s no activity to kill. Are you some sort of serial killer?"
 
       def self.description
         "Delete a timesheet entry."

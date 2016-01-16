@@ -6,7 +6,7 @@ module SlashCommand
       HELP = {cache: nil}
 
       def self.description
-        "Display help information about `/tt`".freeze
+        "Display help information about \"/tt\"".freeze
       end
 
       def call

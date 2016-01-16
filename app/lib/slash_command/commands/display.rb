@@ -4,13 +4,12 @@ module SlashCommand
   module Commands
     class Display < Template
       HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
-        Show all activities in history.
-        usage: `/tt in [NOTE]`
+        Show all activities in history. Usage: `/tt display`
       COMMAND_DESCRIPTION
 
       LIMIT = 50
 
-      NO_HISTORY_ACTIVITY = "You didn`t do anything today, you lazy! :stuck_out_tongue_closed_eyes:"
+      NO_HISTORY_ACTIVITY = "You didn`t do anything yet, you lazy! :stuck_out_tongue_closed_eyes:"
 
       def self.description
         "Display #{LIMIT} entries information.".freeze

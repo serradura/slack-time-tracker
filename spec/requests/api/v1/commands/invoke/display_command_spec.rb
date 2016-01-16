@@ -50,7 +50,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "help" do
       let(:payload) do
-        create(:slack_now_command_payload).tap {|pay| pay.text = "display help" }
+        create(:slack_display_command_payload).tap {|pay| pay.text = "display help" }
       end
 
       it "responds with command instructions" do

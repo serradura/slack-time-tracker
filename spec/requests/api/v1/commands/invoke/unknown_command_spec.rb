@@ -9,7 +9,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     let(:payload) { create(:slack_unknown_command_payload) }
 
     it "responds with a sad message" do
-      expected_message = "Unknown command :cry:"
+      expected_message = SlashCommand::Commands::Unknown::UNKNOWN_COMMAND
 
       expect(response).to have_http_status(200)
       expect(response.body).to be == expected_message
