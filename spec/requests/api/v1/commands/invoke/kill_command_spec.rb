@@ -8,7 +8,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "unknown kill command" do
       let(:payload) do
-        create(:slack_kill_command_payload).tap {|pay| pay.text = "kill#{[' ', '\n', '\t', ' adad'].sample * rand(20)}" }
+        create(:slack_kill_command_payload).tap {|pay| pay.text = "kill#{[' ', "\n", "\t", ' adad'].sample * rand(20)}" }
       end
 
       it "return a unknown message and a command help" do

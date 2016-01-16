@@ -8,10 +8,11 @@ module SlashCommand
     end
 
     TT_COMMANDS = {
-      "in"  => Commands::In,
-      "out" => Commands::Out,
-      "now" => Commands::Now,
-      "kill" => Commands::Kill
+      "in"   => Commands::In,
+      "out"  => Commands::Out,
+      "now"  => Commands::Now,
+      "kill" => Commands::Kill,
+      "edit" => Commands::Edit
     }.update("help" => Commands::Help)
 
     TEST_COMMANDS = {
