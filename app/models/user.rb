@@ -21,11 +21,15 @@ class User < ActiveRecord::Base
     slack_name
   end
 
-  def has_activity_running?
-    return time_entries.exists?(end:nil)
+  def running_activity?
+    running_activity.present?
   end
 
-  def get_activity_running
-    return time_entries.find_by_end(nil)
+  def running_activity
+    @running_activity ||= time_entries.find_by end: nil
+  end
+
+  def stop_running_activity
+    running_activity&.update_attribute(:end, Time.current)
   end
 end

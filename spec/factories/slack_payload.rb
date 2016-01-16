@@ -43,6 +43,14 @@ FactoryGirl.define do
     text { "out" }
   end
 
+  factory :slack_kill_command_payload, parent: :slack_payload do
+    text { "kill current" }
+  end
+
+  factory :slack_display_command_payload, parent: :slack_payload do
+    text { "display" }
+  end
+
   factory :slack_help_command_payload, parent: :slack_payload do
     text { "help" }
   end

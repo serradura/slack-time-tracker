@@ -3,11 +3,12 @@
 module SlashCommand
   module Commands
     class Now < Template
-      NO_CURRENT_ACTIVITY = "You are doing nothing right now, you lazy! :stuck_out_tongue_closed_eyes:!"
       HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
         Shows spent time in current activity.
         usage: `/tt in [NOTE]`
       COMMAND_DESCRIPTION
+
+      NO_CURRENT_ACTIVITY = "You are doing nothing right now, you lazy! :stuck_out_tongue_closed_eyes:!"
 
       def self.description
         "This command shows information about the current activity".freeze
@@ -21,19 +22,10 @@ module SlashCommand
 
       def result
         return HELP if help?
-        return parse_current_activity if has_current_activity?
-        return NO_CURRENT_ACTIVITY 
-      end
+        return user.running_activity.now if user.running_activity?
 
-      def has_current_activity?
-        user.has_activity_running?
+        NO_CURRENT_ACTIVITY
       end
-
-      def parse_current_activity
-        current_activity = user.get_activity_running
-        return (Time.current - current_activity.start).to_formatted_s(:time) + "  -  " + current_activity.note
-      end
-
     end
   end
 end

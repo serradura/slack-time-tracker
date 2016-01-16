@@ -5,21 +5,19 @@ module SlashCommand
     EMPTY_SPACE = " "
     ANY_SPACE_PATTERN = /\s+/.freeze
 
-    attr_reader :raw
+    attr_reader :text
 
     def initialize(text)
-      @raw = String(text).tap do |str|
-        str.strip!
-        str.gsub!(ANY_SPACE_PATTERN, EMPTY_SPACE)
-      end
+      normalize(text)
+      parse
     end
 
     def name
-      @name ||= get(0).tap(&:downcase!)
+      @name ||= @raw_name.tap(&:downcase!)
     end
 
     def data
-      get(1)
+      @data ||= @raw_data.join(EMPTY_SPACE)
     end
 
     def help?
@@ -28,12 +26,16 @@ module SlashCommand
 
     private
 
-    def parsed
-      @parsed ||= @raw.split
+    def normalize(text)
+      @text = String(text).tap do |str|
+        str.strip!
+        str.gsub!(ANY_SPACE_PATTERN, EMPTY_SPACE)
+      end
     end
 
-    def get(index)
-      String(parsed[index])
+    def parse
+      @raw_data = Array(@text.split)
+      @raw_name = String(@raw_data.shift)
     end
   end
 end

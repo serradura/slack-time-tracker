@@ -2,13 +2,25 @@
 
 module SlashCommand
   class Invoke
-    COMMANDS = {
+    COMMANDS_BUILDER = lambda do |tt_commands, test_commands|
+      tt_commands.merge!(test_commands) unless Rails.env.production?
+      tt_commands.freeze
+    end
+
+    TT_COMMANDS = {
+      "in"  => Commands::In,
+      "out" => Commands::Out,
+      "now" => Commands::Now,
+      "kill" => Commands::Kill,
+      "display" => Commands::Display
+    }.update("help" => Commands::Help)
+
+    TEST_COMMANDS = {
       "when" => Commands::When,
-      "what" => Commands::What,
-      "in"   => Commands::In,
-      "out"  => Commands::Out,
-      "now"  => Commands::Now
-    }.update("help" => Commands::Help).freeze
+      "what" => Commands::What
+    }
+
+    COMMANDS = COMMANDS_BUILDER.call(TT_COMMANDS, TEST_COMMANDS)
 
     def self.command_with(params)
       new(params).command.tap(&:call)
