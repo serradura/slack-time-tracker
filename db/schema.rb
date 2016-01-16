@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160116054738) do
+ActiveRecord::Schema.define(version: 20160116113352) do
+
+  create_table "time_entries", force: :cascade do |t|
+    t.integer  "user_id"
+    t.date     "date"
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "duration"
+    t.text     "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "time_entries", ["user_id"], name: "index_time_entries_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "slack_id"
