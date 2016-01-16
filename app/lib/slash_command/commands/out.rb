@@ -3,12 +3,16 @@
 module SlashCommand
   module Commands
     class Out < Template
-      HELP = "This command will stop the last activity."
-      STOP_SUCCESS_MSG = "You just took a break. Move on! :smiley:"
-      ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g: `/tt in <NOTE>`)"
+      HELP = "This command will stop the last activity.".freeze
+      STOP_SUCCESS_MSG = "You just took a break. Move on! :smiley:".freeze
+      ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g: `/tt in <NOTE>`)".freeze
 
       def call
         response.result = result
+      end
+
+      def self.description
+        HELP
       end
 
       private
