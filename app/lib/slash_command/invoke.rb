@@ -12,7 +12,8 @@ module SlashCommand
       "out" => Commands::Out,
       "now" => Commands::Now,
       "kill" => Commands::Kill,
-      "display" => Commands::Display
+      "display" => Commands::Display,
+      "edit" => Commands::Edit
     }.update("help" => Commands::Help)
 
     TEST_COMMANDS = {
