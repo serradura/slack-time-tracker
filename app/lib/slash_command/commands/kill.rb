@@ -7,8 +7,13 @@ module SlashCommand
         Delete the current activity.
         usage: `/tt kill current`
       COMMAND_DESCRIPTION
-      COMMAND_NOT_VALID = "This command is not valid. Use `/tt kill current`"
+
+      CURRENT_OPTION = "current"
+
       ACTIVITY_DELETED = "It's dead. (R.I.P :goberserk:)"
+
+      COMMAND_NOT_VALID = "This command is not valid. Use `/tt kill current`"
+
       ACTIVITY_NOT_RUNNING_MSG = "You are doing nothing right now, you lazy! :stuck_out_tongue_closed_eyes:"
 
       def self.description
@@ -23,20 +28,23 @@ module SlashCommand
 
       def result
         return HELP if help?
-        return current? ? result_current : COMMAND_NOT_VALID
+        return execute_current_option if current_option?
+
+        COMMAND_NOT_VALID
       end
 
-      def result_current
+      def current_option?
+        data.tap(&:downcase!).include?(CURRENT_OPTION)
+      end
+
+      def execute_current_option
         if user.running_activity?
-          user.running_activity.destroy
+          user.running_activity.delete
+
           ACTIVITY_DELETED
         else
           ACTIVITY_NOT_RUNNING_MSG
         end
-      end
-
-      def current?
-        data.tap(&:downcase!) == "current"
       end
     end
   end
