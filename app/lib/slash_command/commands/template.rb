@@ -12,6 +12,10 @@ module SlashCommand
         @parsed_command = parsed_command
       end
 
+      def self.description
+        "Unavailable description."
+      end
+
       def call
         fail NotImplementedError
       end
