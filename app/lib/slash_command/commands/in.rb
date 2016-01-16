@@ -25,7 +25,7 @@ module SlashCommand
       def result
         return EMPTY_NOTE_MSG if data.blank?
         return HELP if help?
-        return result_with_activity
+        result_with_activity
       end
 
       def result_with_activity
