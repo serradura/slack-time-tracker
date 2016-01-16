@@ -51,6 +51,10 @@ FactoryGirl.define do
     text { "display" }
   end
 
+  factory :slack_today_command_payload, parent: :slack_payload do
+    text { "today" }
+  end
+
   factory :slack_edit_command_payload, parent: :slack_payload do
     text { "edit #{Faker::Hacker.say_something_smart}" }
   end
