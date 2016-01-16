@@ -4,9 +4,8 @@ module SlashCommand
   module Commands
     class Out < Template
       HELP = "This command will stop the last activity."
-      STOP_SUCCESS_MSG = "You just took a break. Move on! :simle:"
-      ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g /tt in <NOTE>)"
-      SUCCESS_STOP_MSG = "You just took a break. Move on! :simle:"
+      STOP_SUCCESS_MSG = "You just took a break. Move on! :smiley:"
+      ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g: `/tt in <NOTE>`)"
 
       def call
         response.result = result
@@ -22,7 +21,7 @@ module SlashCommand
       def result_with_activity
         time_entry = user.time_entries.last
         time_entry.update_attributes(end: Time.current)
-        SUCCESS_STOP_MSG
+        STOP_SUCCESS_MSG
       end
 
       def running_activity?
