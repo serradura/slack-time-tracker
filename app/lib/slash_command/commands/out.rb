@@ -4,8 +4,8 @@ module SlashCommand
   module Commands
     class Out < Template
       HELP = "This command will stop the last activity.".freeze
-      STOP_SUCCESS_MSG = "You just took a break. Move on! :smiley:".freeze
-      ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g: `/tt in <NOTE>`)".freeze
+      STOP_SUCCESS_MSG = "You just took a break. Move on!".freeze
+      ACTIVITY_NOT_RUNNING_MSG = "There’s no project to leave. Where do you think you are going?".freeze
 
       def self.description
         HELP

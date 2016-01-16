@@ -7,8 +7,7 @@ class TimeEntry < ActiveRecord::Base
 
   def now
     diff = TimeDiffer.from_now(start)
-
-    "#{diff} - #{note}"
+    "#{diff}"
   end
 
   def to_display

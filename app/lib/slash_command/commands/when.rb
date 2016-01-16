@@ -26,7 +26,7 @@ module SlashCommand
         if help?
           HELP
         else
-          TEMPLATE % {user_name: payload.user.name}
+          TEMPLATE % {user_name: user.name}
         end
       end
     end

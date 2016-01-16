@@ -10,6 +10,8 @@ module SlashCommand
 
       NO_CURRENT_ACTIVITY = "You are doing nothing right now, you lazy! :stuck_out_tongue_closed_eyes:!"
 
+      SUCCESS_NOW = "You have been working for %{duration} on \"%{note}\". Whoa, I’m impressed!"
+
       def self.description
         "This command shows information about the current activity".freeze
       end
@@ -22,7 +24,7 @@ module SlashCommand
 
       def result
         return HELP if help?
-        return user.running_activity.now if user.running_activity?
+        return SUCCESS_NOW % {duration: user.running_activity.now, note: user.running_activity.note} if user.running_activity?
 
         NO_CURRENT_ACTIVITY
       end
