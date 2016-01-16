@@ -6,7 +6,8 @@ module SlashCommand
       "when" => Commands::When,
       "what" => Commands::What,
       "in"   => Commands::In,
-      "out"  => Commands::Out
+      "out"  => Commands::Out,
+      "now"  => Commands::Now
     }.update("help" => Commands::Help).freeze
 
     def self.command_with(params)

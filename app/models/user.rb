@@ -20,4 +20,12 @@ class User < ActiveRecord::Base
   def name
     slack_name
   end
+
+  def has_activity_running?
+    return time_entries.exists?(end:nil)
+  end
+
+  def get_activity_running
+    return time_entries.find_by_end(nil)
+  end
 end
