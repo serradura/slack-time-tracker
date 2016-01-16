@@ -9,15 +9,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     let(:current_user) { User.last }
 
     context "there is a running activity" do
-
-      NOTE = 'test'
+      NOTE = "test"
 
       let(:payload) do
         create(:slack_in_command_payload).tap {|pay| pay.text = "in #{NOTE}" }
       end
 
       context "there is note" do
-        NOTE_CHANGE = 'test2'
+        NOTE_CHANGE = "test2"
         before do
           payload.text = "edit #{NOTE_CHANGE}"
           post api_v1_commands_invoke_path, payload.to_h
@@ -31,7 +30,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
           expect(current_user.running_activity.note).to be == NOTE_CHANGE
         end
       end
-
 
       context "there is no note" do
         before do
@@ -50,7 +48,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there is no running activity" do
-      
       let(:payload) do
         create(:slack_edit_command_payload)
       end
@@ -61,7 +58,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         expect(response.body).to be == expected_message
       end
     end
-
 
     context "help" do
       let(:payload) do
