@@ -39,7 +39,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
-        expect(current_user.time_entries.where(end: nil).exists?).to be false
+        expect(current_user.running_activity?).to be_falsey
       end
     end
 
