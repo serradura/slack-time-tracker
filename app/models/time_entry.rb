@@ -4,8 +4,8 @@ class TimeEntry < ActiveRecord::Base
   validates :note, :date, :start, presence: true
 
   def now
-    time = (Time.current - start).to_formatted_s(:time)
+    diff = TimeDiffer.from_now(start)
 
-    "#{time} - #{note}"
+    "#{diff} - #{note}"
   end
 end
