@@ -23,7 +23,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       end
 
       it "responds with command instructions" do
-        expected_message = "This command will show you all the event lectures."
+        expected_message = SlashCommand::Commands::What::HELP
 
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
