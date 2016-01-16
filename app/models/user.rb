@@ -1,10 +1,13 @@
 class User < ActiveRecord::Base
+  has_many :time_entries
+
   validates :slack_name, :slack_id, presence: true
   validates :slack_id, uniqueness: true
 
   # TODO: Test
   def self.find_or_update_by(params)
-    slack_id, slack_name = params[:user_id], params[:user_name]
+    slack_id = params[:user_id]
+    slack_name = params[:user_name]
 
     User
       .create_with(slack_name: slack_name)
