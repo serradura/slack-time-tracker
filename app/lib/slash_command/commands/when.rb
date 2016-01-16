@@ -10,7 +10,15 @@ module SlashCommand
       BODY
 
       def call
-        response.result = TEMPLATE % {user_name: payload.user.name}
+        response.result = result
+      end
+
+      def result
+        if help?
+          "This command will show you the next events.".freeze
+        else
+          TEMPLATE % {user_name: payload.user.name}
+        end
       end
     end
   end

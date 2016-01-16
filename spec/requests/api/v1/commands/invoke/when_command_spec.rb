@@ -16,5 +16,18 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       expect(response.body).to include user_reference
       expect(response.body).to include expected_url
     end
+
+    context "help" do
+      let(:payload) do
+        create(:slack_when_command_payload).tap {|pay| pay.text = "#{pay.text} help" }
+      end
+
+      it "responds with command instructions" do
+        expected_message = "This command will show you the next events."
+
+        expect(response).to have_http_status(200)
+        expect(response.body).to be == expected_message
+      end
+    end
   end
 end

@@ -3,6 +3,8 @@
 module SlashCommand
   module Commands
     class What < Template
+      HELP = "This command will show you all the event lectures."
+
       TEMPLATE = <<-BODY.strip_heredoc.freeze
         The next Hey! event has two lectures planned. The first one is with Rich Fiddaman discussing everything hospitality. The second is with Matt Dix discussing Leeds Indie Food Festival.
 
@@ -12,7 +14,7 @@ module SlashCommand
       BODY
 
       def call
-        response.result = TEMPLATE
+        response.result = help? ? HELP : TEMPLATE
       end
     end
   end
