@@ -5,6 +5,8 @@ module SlashCommand
     class Out < Template
       HELP = "This command will stop the last activity."
       STOP_SUCCESS_MSG = "You just took a break. Move on! :simle:"
+      ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g /tt in <NOTE>)"
+      SUCCESS_STOP_MSG = "You just took a break. Move on! :simle:"
 
       def call
         response.result = result
@@ -13,16 +15,20 @@ module SlashCommand
       private
 
       def result
-        binding.pry
         return HELP if help?
-        result_with_activity
+        return running_activity? ? result_with_activity : ACTIVITY_NOT_RUNNING_MSG
       end
 
       def result_with_activity
-        user.time_entries.create(date: Date.current, start: Time.current, note: data)
-
-        NEW_ACTIVITY_CREATED
+        time_entry = user.time_entries.last
+        time_entry.update_attributes(end: Time.current)
+        SUCCESS_STOP_MSG
       end
+
+      def running_activity?
+        user.time_entries.where(end: nil).exists?
+      end
+
     end
   end
 end

@@ -6,34 +6,43 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       post api_v1_commands_invoke_path, payload.to_h
     end
 
-    # context "there is no running activity" do
-    #   let(:current_user) { User.last }
+    context "there is no running activity" do
+      let(:current_user) { User.last }
 
-    #   let(:payload) do
-    #     create(:slack_in_command_payload)
-    #   end
+      let(:payload) do
+        create(:slack_out_command_payload)
+      end
 
-    #   it "responds with a new activity entry message" do
-    #     expected_message = SlashCommand::Commands::In::NEW_ACTIVITY_CREATED
+      it "responds with a message that activity is not running" do
+        expected_message = SlashCommand::Commands::Out::ACTIVITY_NOT_RUNNING_MSG
 
-    #     expect(response).to have_http_status(200)
-    #     expect(response.body).to be == expected_message
-    #     expect(current_user.time_entries.count).to_not be_zero
-    #   end
-    # end
+        expect(response).to have_http_status(200)
+        expect(response.body).to be == expected_message
+        expect(current_user.time_entries.count).to be_zero
+      end
+    end
 
-    # context "there is no note" do
-    #   let(:payload) do
-    #     create(:slack_in_command_payload).tap {|pay| pay.text = "in#{[' ', "\n", "\t"].sample * rand(20)}" }
-    #   end
 
-    #   it "responds with not allowed empty note activity" do
-    #     expected_message = SlashCommand::Commands::In::EMPTY_NOTE_MSG
+    context "there is a running activity" do
+      let(:current_user) { User.last }
 
-    #     expect(response).to have_http_status(200)
-    #     expect(response.body).to be == expected_message
-    #   end
-    # end
+      let(:payload) do
+        create(:slack_in_command_payload).tap {|pay| pay.text = "in test" }
+      end
+
+      before do
+        payload.text = "out#{[' ', "\n", "\t"].sample * rand(20)}"
+        post api_v1_commands_invoke_path, payload.to_h
+      end
+
+      it "stop activity and responds with a message" do
+        expected_message = SlashCommand::Commands::Out::STOP_SUCCESS_MSG
+
+        expect(response).to have_http_status(200)
+        expect(response.body).to be == expected_message
+        expect(current_user.time_entries.where(end: nil).exists?).to be false
+      end
+    end
 
     context "help" do
       let(:payload) do
