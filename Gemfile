@@ -40,6 +40,7 @@ end
 
 group :test do
   gem "rspec-rails", "~> 3.4"
+  gem "database_cleaner", "~> 1.5", ">= 1.5.1"
 end
 
 # To use ActiveModel has_secure_password
