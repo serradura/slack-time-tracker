@@ -1,12 +1,10 @@
 module SlashCommand
   class Payload
-    User = Struct.new(:name, :id)
-
     attr_reader :raw, :user
 
     def initialize(params)
       @raw  = params
-      @user = User.new(raw[:user_name], raw[:user_id])
+      @user = find_user
     end
 
     def token
@@ -15,6 +13,10 @@ module SlashCommand
 
     def text
       @raw[:text]
+    end
+
+    def find_user
+      User.find_or_update_by raw
     end
   end
 end

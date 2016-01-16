@@ -22,6 +22,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
       it "responds with success" do
         expect(response).to have_http_status(200)
+        expect(User.count).to_not be_zero
       end
     end
   end

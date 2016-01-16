@@ -1,6 +1,8 @@
 AllCops:
   Exclude:
     - '**/Guardfile'
+    - 'db/schema.rb'
+    - 'lib/tasks/slack_command_simulator.rake'
 
 Metrics/LineLength:
   Max: 200
