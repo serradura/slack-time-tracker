@@ -1,7 +1,5 @@
 class TimeDiffer
-  def self.between(start_time, end_time)
-    seconds = seconds_diff(start_time, end_time)
-
+  def self.diff(seconds)
     hours = seconds / 3600
     seconds -= hours * 3600
 
@@ -9,6 +7,12 @@ class TimeDiffer
     seconds -= minutes * 60
 
     "#{format(hours)}:#{format(minutes)}:#{format(seconds)}"
+  end
+
+  def self.between(start_time, end_time)
+    seconds = calc_seconds(start_time, end_time)
+
+    diff(seconds)
   end
 
   def self.from_now(time)
@@ -19,7 +23,7 @@ class TimeDiffer
     number.to_s.rjust(2, "0".freeze)
   end
 
-  def self.seconds_diff(start_time, end_time)
+  def self.calc_seconds(start_time, end_time)
     (start_time - end_time).to_i.abs
   end
 end
