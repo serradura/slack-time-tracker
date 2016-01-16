@@ -6,6 +6,27 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       post api_v1_commands_invoke_path, payload.to_h
     end
 
+    context "there is a running activity" do
+      let(:current_user) { User.last }
+
+      let(:payload) do
+        create(:slack_in_command_payload).tap {|pay| pay.text = "in test" }
+      end
+
+      before do
+        payload.text = "in note"
+        post api_v1_commands_invoke_path, payload.to_h
+      end
+
+      it "stop last activity and start a new one" do
+        expected_message = SlashCommand::Commands::In::STOPED_LAST_CREATED_NEW
+
+        expect(response).to have_http_status(200)
+        expect(response.body).to be == expected_message
+        expect(current_user.time_entries.where(end: nil).count).to be == 1
+      end
+    end
+
     context "there is no running activity" do
       let(:current_user) { User.last }
 

@@ -19,16 +19,9 @@ module SlashCommand
 
       def result
         return HELP if help?
-        return stop_current_activity if user.running_activity?
+        return STOP_SUCCESS_MSG if user.stop_running_activity
 
         ACTIVITY_NOT_RUNNING_MSG
-      end
-
-      def stop_current_activity
-        time_entry = user.running_activity
-        time_entry.update_attributes(end: Time.current)
-
-        STOP_SUCCESS_MSG
       end
     end
   end

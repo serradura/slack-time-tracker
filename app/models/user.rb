@@ -28,4 +28,8 @@ class User < ActiveRecord::Base
   def running_activity
     @running_activity ||= time_entries.find_by end: nil
   end
+
+  def stop_running_activity
+    running_activity&.update_attribute(:end, Time.current)
+  end
 end
