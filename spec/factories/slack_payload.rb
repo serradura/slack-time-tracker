@@ -35,6 +35,10 @@ FactoryGirl.define do
     text { "in #{Faker::Hacker.say_something_smart}" }
   end
 
+  factory :slack_out_command_payload, parent: :slack_payload do
+    text { "out" }
+  end
+
   factory :slack_help_command_payload, parent: :slack_payload do
     text { "help" }
   end
