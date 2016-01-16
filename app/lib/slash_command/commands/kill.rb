@@ -23,17 +23,21 @@ module SlashCommand
 
       def result
         return HELP if help?
-        return is_current? ? result_current : COMMAND_NOT_VALID
+        return current? ? result_current : COMMAND_NOT_VALID
       end
 
       def result_current
-        
+        if user.running_activity?
+          user.running_activity.destroy
+          ACTIVITY_DELETED
+        else
+          ACTIVITY_NOT_RUNNING_MSG
+        end
       end
 
-      def is_current?
+      def current?
         data.tap(&:downcase!) == "current"
       end
-
     end
   end
 end
