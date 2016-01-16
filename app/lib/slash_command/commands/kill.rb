@@ -17,7 +17,7 @@ module SlashCommand
       ACTIVITY_NOT_RUNNING_MSG = "You are doing nothing right now, you lazy! :stuck_out_tongue_closed_eyes:"
 
       def self.description
-        HELP
+        "Delete a timesheet entry."
       end
 
       def call
