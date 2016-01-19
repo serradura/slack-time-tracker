@@ -3,8 +3,10 @@
 module SlashCommand
   module Commands
     class TokenError < Template
+      ERROR = "Invalid slack token :astonished:"
+
       def call
-        response.result = "Invalid slack token :astonished:"
+        response.result = ERROR
       end
     end
   end

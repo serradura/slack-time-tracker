@@ -3,16 +3,14 @@
 module SlashCommand
   module Commands
     class Today < Template
-      HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
+      DESC = "Display activities from today."
+
+      HELP = <<-HELP.strip_heredoc.freeze
         Show all today activities.
         usage: `/tt today`
-      COMMAND_DESCRIPTION
+      HELP
 
       NO_HISTORY_ACTIVITY = "You didn`t do anything today, you lazy! :stuck_out_tongue_closed_eyes:"
-
-      def self.description
-        "Display activities from today.".freeze
-      end
 
       def call
         response.result = result
@@ -21,7 +19,7 @@ module SlashCommand
       private
 
       def result
-        return HELP if help?
+        return help if help?
         return NO_HISTORY_ACTIVITY unless relation.present?
 
         show_time_entries_from_today

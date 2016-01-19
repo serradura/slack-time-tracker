@@ -3,17 +3,15 @@
 module SlashCommand
   module Commands
     class Display < Template
-      HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
-        Show all activities in history. Usage: `/tt display`
-      COMMAND_DESCRIPTION
-
       LIMIT = 50
 
-      NO_HISTORY_ACTIVITY = "You didn`t do anything yet, you lazy! :stuck_out_tongue_closed_eyes:"
+      DESC = "Display #{LIMIT} entries information."
 
-      def self.description
-        "Display #{LIMIT} entries information.".freeze
-      end
+      HELP = <<-HELP.strip_heredoc.freeze
+        Show all activities in history. Usage: `/tt display`
+      HELP
+
+      NO_HISTORY_ACTIVITY = "You didn`t do anything yet, you lazy! :stuck_out_tongue_closed_eyes:"
 
       def call
         response.result = result
@@ -23,12 +21,12 @@ module SlashCommand
 
       def result
         return HELP if help?
-        return NO_HISTORY_ACTIVITY unless user.time_entries.exists?
+        return NO_HISTORY_ACTIVITY if user.time_entries.empty?
 
-        show_recent_time_entries
+        display_time_entries
       end
 
-      def show_recent_time_entries
+      def display_time_entries
         relation = user.time_entries.order(date: :desc, start: :asc).limit(LIMIT)
 
         TimeEntries::Report.new(relation, data).build

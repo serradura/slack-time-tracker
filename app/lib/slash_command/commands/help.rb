@@ -3,18 +3,16 @@
 module SlashCommand
   module Commands
     class Help < Template
-      HELP = {cache: nil}
+      CACHE = {data: nil}
 
-      def self.description
-        "Display help information about \"/tt\"".freeze
-      end
+      DESC = "Display help information about \"/tt\""
 
       def call
         response.result = result
       end
 
       def result
-        HELP[:cache] ||= "Available commands:\n#{commands_help}".freeze
+        CACHE[:data] ||= "Available commands:\n#{commands_help}".freeze
       end
 
       def commands_help
