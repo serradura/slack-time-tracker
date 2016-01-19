@@ -32,7 +32,7 @@ module SlashCommand
       end
 
       def show_time_entries_from_today
-        TimeEntriesReport.new(relation).build
+        TimeEntries::Report.new(relation, data).build
       end
     end
   end
