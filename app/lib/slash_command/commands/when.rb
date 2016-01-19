@@ -1,10 +1,12 @@
 module SlashCommand
   module Commands
     class When < Template
-      HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
+      DESC = "This command will show the next events."
+      
+      HELP = <<-HELP.strip_heredoc.freeze
         Show the next events.
         usage: `/tt when`
-      COMMAND_DESCRIPTION
+      HELP
 
       TEMPLATE = <<-BODY.strip_heredoc.freeze
         The next Hey! event will be held on the 20th May from 7:30pm at The Belgrave in central Leeds.
@@ -13,10 +15,6 @@ module SlashCommand
 
         http://hey.wearestac.com/
       BODY
-
-      def self.description
-        "This command will show the next events.".freeze
-      end
 
       def call
         response.result = result

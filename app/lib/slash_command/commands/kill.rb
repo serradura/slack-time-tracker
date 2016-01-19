@@ -3,22 +3,17 @@
 module SlashCommand
   module Commands
     class Kill < Template
-      HELP = <<-COMMAND_DESCRIPTION.strip_heredoc.freeze
+      DESC = "Delete a timesheet entry."
+
+      HELP = <<-HELP.strip_heredoc.freeze
         Delete the current activity.
         usage: `/tt kill current`
-      COMMAND_DESCRIPTION
+      HELP
 
       CURRENT_OPTION = "current"
-
       ACTIVITY_DELETED = "It's dead. (R.I.P :goberserk:)"
-
       COMMAND_NOT_VALID = "This command is not valid. Use `/tt kill current`"
-
       ACTIVITY_NOT_RUNNING_MSG = "There’s no activity to kill. Are you some sort of serial killer?"
-
-      def self.description
-        "Delete a timesheet entry."
-      end
 
       def call
         response.result = result

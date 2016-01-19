@@ -2,16 +2,15 @@ require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
   describe "'display' command" do
+    let(:current_user) { User.last }
+
     before do
+      User.delete_all
       post api_v1_commands_invoke_path, payload.to_h
     end
 
     context "there are no activities registered" do
-      let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_display_command_payload)
-      end
+      let(:payload) { create(:slack_display_command_payload) }
 
       it "responds with no activities message" do
         expected_message = SlashCommand::Commands::Display::NO_HISTORY_ACTIVITY
@@ -22,11 +21,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "user has registered activities to display" do
-      let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_payload)
-      end
+      let(:payload) { create(:slack_payload) }
 
       before do
         payload.text = "in test 1"
