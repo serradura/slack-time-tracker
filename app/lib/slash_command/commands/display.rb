@@ -31,7 +31,7 @@ module SlashCommand
       def show_recent_time_entries
         relation = user.time_entries.order(date: :desc, start: :asc).limit(LIMIT)
 
-        TimeEntriesReport.new(relation).build
+        TimeEntries::Report.new(relation, data).build
       end
     end
   end

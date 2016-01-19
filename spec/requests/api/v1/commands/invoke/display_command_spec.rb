@@ -43,8 +43,11 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       end
 
       it "responds list of activities information" do
-        # binding.pry
         expect(response).to have_http_status(200)
+      end
+
+      context "with --ids option"do
+        xit "responds list of activities information"
       end
     end
 
