@@ -12,6 +12,8 @@ class TimeEntry < ActiveRecord::Base
   private
 
   def calculate_duration
-    self.duration = self.end - start if start.present? && self.end.present?
+    return unless start.present? && self.end.present?
+
+    self.duration = TimeDiffer.calc_seconds(self.end, start)
   end
 end
