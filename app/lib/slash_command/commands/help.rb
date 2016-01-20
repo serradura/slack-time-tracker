@@ -5,15 +5,17 @@ module SlashCommand
     class Help < Template
       CACHE = {help: nil}
 
+      delegate :commands, :name!, to: :class
+
       NAME = "help"
       DESC = "Display help information about \"/tt\""
 
-      def self.help
-        CACHE[:help] ||= "Available commands:\n#{list}".freeze
+      def self.commands
+        Invoke.commands
       end
 
-      def self.commands
-        SlashCommand::Invoke.commands
+      def self.help
+        CACHE[:help] ||= "Available commands:\n#{list}".freeze
       end
 
       def self.list
@@ -32,12 +34,10 @@ module SlashCommand
 
       private
 
-      def help_command?
-        name == self.class.name! && data.blank?
       end
 
-      def commands
-        self.class.commands
+      def help_command?
+        name == name! && data.blank?
       end
     end
   end
