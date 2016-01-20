@@ -12,7 +12,8 @@ module SlashCommand
                  Commands::Now,
                  Commands::Edit,
                  Commands::Kill,
+                 Commands::Display,
                  Commands::Today,
-                 Commands::Display
+                 Commands::Yesterday
                ]
 end
