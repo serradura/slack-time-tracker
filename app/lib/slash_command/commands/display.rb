@@ -6,7 +6,7 @@ module SlashCommand
       LIMIT = 50
 
       NAME = "display"
-      DESC = "Display #{LIMIT} entries information."
+      DESC = "Display #{LIMIT} activities."
       HELP = <<-HELP.strip_heredoc.freeze
         Show all activities in history. Usage: `/tt display`
       HELP
