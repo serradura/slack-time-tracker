@@ -2,8 +2,6 @@ require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
   describe "security validation" do
-    let(:error_message) { "Invalid slack token :astonished:" }
-
     before do
       post api_v1_commands_invoke_path, payload.to_h
     end
@@ -13,7 +11,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
       it "responds with an error message" do
         expect(response).to have_http_status(200)
-        expect(response.body).to be == error_message
+        expect(response.body).to be == SlashCommand::PayloadValidator::TOKEN_ERROR
       end
     end
 

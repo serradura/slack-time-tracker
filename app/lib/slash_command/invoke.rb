@@ -2,6 +2,8 @@ module SlashCommand
   class Invoke
     COMMANDS = {cache: nil}
 
+    delegate :commands, to: :class
+
     def self.setup(commands)
       COMMANDS[:cache] ||= CommandsContainer.new(commands)
     end
@@ -11,7 +13,7 @@ module SlashCommand
     end
 
     def self.command_with(params)
-      new(params).command.tap(&:call)
+      new(params).command_response
     end
 
     def initialize(params)
@@ -20,15 +22,17 @@ module SlashCommand
       @parsed_command = CommandParser.new(params[:text])
     end
 
-    def command
-      strategy = @validator.ok? ? fetch_command : Commands::TokenError
-      strategy.new(@payload, @parsed_command)
+    def command_response
+      return @validator.error_response if @validator.error?
+
+      fetch_command.tap(&:call).response
     end
 
     private
 
     def fetch_command
-      self.class.commands.fetch(@parsed_command.name)
+      strategy = commands.fetch(@parsed_command)
+      strategy.new(@payload, @parsed_command)
     end
   end
 end

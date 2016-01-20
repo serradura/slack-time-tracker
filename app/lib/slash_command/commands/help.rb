@@ -27,13 +27,13 @@ module SlashCommand
       private_class_method :list
 
       def call
-        command = help_command? ? self.class : commands.fetch(data.downcase)
-
-        response.result = command.help
+        response.result = fetch_command.help
       end
 
       private
 
+      def fetch_command
+        help_command? ? self.class : commands.fetch_by_name(data.downcase)
       end
 
       def help_command?

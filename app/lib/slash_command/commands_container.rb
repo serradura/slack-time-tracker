@@ -10,7 +10,13 @@ module SlashCommand
       build
     end
 
-    def fetch(name)
+    def fetch(parsed_command)
+      return default if parsed_command.blank?
+
+      fetch_by_name(parsed_command.name)
+    end
+
+    def fetch_by_name(name)
       @cache.fetch(name, @unknown)
     end
 
