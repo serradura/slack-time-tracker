@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class Kill < Template
+      NAME = "kill"
       DESC = "Delete a timesheet entry."
 
       HELP = <<-HELP.strip_heredoc.freeze

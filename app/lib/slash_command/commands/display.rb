@@ -5,8 +5,8 @@ module SlashCommand
     class Display < Template
       LIMIT = 50
 
+      NAME = "display"
       DESC = "Display #{LIMIT} entries information."
-
       HELP = <<-HELP.strip_heredoc.freeze
         Show all activities in history. Usage: `/tt display`
       HELP

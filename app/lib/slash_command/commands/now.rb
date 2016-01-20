@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class Now < Template
+      NAME = "now"
       DESC = "This command shows information about the current activity"
 
       HELP = <<-HELP.strip_heredoc.freeze

@@ -1,6 +1,7 @@
 module SlashCommand
   module Commands
     class When < Template
+      NAME = "when"
       DESC = "This command will show the next events."
       
       HELP = <<-HELP.strip_heredoc.freeze

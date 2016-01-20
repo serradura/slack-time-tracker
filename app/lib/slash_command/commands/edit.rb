@@ -3,8 +3,8 @@
 module SlashCommand
   module Commands
     class Edit < Template
+      NAME = "edit"
       DESC = "This command will update the current activity note."
-
       HELP = <<-HELP.strip_heredoc.freeze
         Update the note of the current activity.
         usage: `/tt edit [NOTE]`

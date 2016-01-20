@@ -5,6 +5,7 @@ module SlashCommand
     class Help < Template
       CACHE = {data: nil}
 
+      NAME = "help"
       DESC = "Display help information about \"/tt\""
 
       def call

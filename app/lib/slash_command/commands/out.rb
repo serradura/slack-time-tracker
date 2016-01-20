@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class Out < Template
+      NAME = "out"
       DESC = "This command will stop the last activity."
 
       HELP = "This command will stop the last activity."

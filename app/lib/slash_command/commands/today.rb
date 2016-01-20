@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class Today < Template
+      NAME = "today"
       DESC = "Display activities from today."
 
       HELP = <<-HELP.strip_heredoc.freeze

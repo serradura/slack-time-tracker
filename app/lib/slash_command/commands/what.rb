@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class What < Template
+      NAME = "what"
       DESC = "This command will show all the event lectures."
 
       HELP = <<-HELP.strip_heredoc.freeze

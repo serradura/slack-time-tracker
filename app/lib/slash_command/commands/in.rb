@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class In < Template
+      NAME = "in"
       DESC = "This command will start a new activity."
       HELP = "Start the timer for a new activity. Usage: `/tt in [NOTE]"
 
