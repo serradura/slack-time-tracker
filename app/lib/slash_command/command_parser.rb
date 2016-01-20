@@ -12,6 +12,10 @@ module SlashCommand
       parse
     end
 
+    def blank?
+      name.blank? && data.blank?
+    end
+
     def name
       @name ||= @raw_name.tap(&:downcase!)
     end

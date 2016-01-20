@@ -33,7 +33,7 @@ module SlashCommand
       end
 
       def self.name_error!
-        raise CommandNameError
+        fail CommandNameError
       end
 
       def call

@@ -2,12 +2,12 @@ module Api
   module V1
     class CommandsController < ApplicationController
       def invoke
-        render current_command.response.data
+        render command_response.data
       end
 
       private
 
-      def current_command
+      def command_response
         SlashCommand::Invoke.command_with(params)
       end
     end

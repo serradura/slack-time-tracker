@@ -2,11 +2,11 @@
 
 module SlashCommand
   module Commands
-    class TokenError < Template
-      ERROR = "Invalid slack token :astonished:"
+    class Default < Template
+      NAME = "default"
 
       def call
-        response.result = ERROR
+        response.result = Help.help
       end
     end
   end

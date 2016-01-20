@@ -1,6 +1,6 @@
 module SlashCommand
   class CommandsContainer
-    attr_reader :unknown
+    attr_reader :unknown, :default
 
     delegate :map, :each, to: :@relation
 
@@ -10,7 +10,13 @@ module SlashCommand
       build
     end
 
-    def fetch(name)
+    def fetch(parsed_command)
+      return default if parsed_command.blank?
+
+      fetch_by_name(parsed_command.name)
+    end
+
+    def fetch_by_name(name)
       @cache.fetch(name, @unknown)
     end
 
@@ -18,6 +24,7 @@ module SlashCommand
 
     def setup(config)
       @help = config.fetch(:help)
+      @default = config.fetch(:default)
       @unknown = config.fetch(:unknown)
 
       @relation = Array(config.fetch(:available))

@@ -22,11 +22,8 @@ task :slack_command_simulator, %i[text token api_url] => [:environment] do |_, a
           ERROR
   end
 
-  # Argument validation
-  fail "Error: text argument is required!" if String(args.text).tap(&:strip!).blank?
-
   # Set default arguments
-  args.with_defaults api_url: ENV.fetch("SLACK_CMD_API_URL", "http://localhost:3000")
+  args.with_defaults text: "", api_url: ENV.fetch("SLACK_CMD_API_URL", "http://localhost:3000")
 
   # Create payload folder if it's doesn't exists
   payload_folder = Rails.root.join("tmp/slack_command_simulator")
