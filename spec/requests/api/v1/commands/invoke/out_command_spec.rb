@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:current_command) { SlashCommand::Commands::Out }
   describe "'out' command" do
     before do
       post api_v1_commands_invoke_path, payload.to_h
@@ -10,11 +11,11 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       let(:current_user) { User.last }
 
       let(:payload) do
-        create(:slack_out_command_payload)
+        create(:slack_payload).tap {|pay| pay.text = "out" }
       end
 
       it "responds with a message that activity is not running" do
-        expected_message = SlashCommand::Commands::Out::ACTIVITY_NOT_RUNNING_MSG
+        expected_message = current_command::ACTIVITY_NOT_RUNNING_MSG
 
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
@@ -26,7 +27,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       let(:current_user) { User.last }
 
       let(:payload) do
-        create(:slack_in_command_payload).tap {|pay| pay.text = "in test" }
+        create(:slack_payload).tap {|pay| pay.text = "in test" }
       end
 
       before do
@@ -35,7 +36,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       end
 
       it "stop activity and responds with a message" do
-        expected_message = SlashCommand::Commands::Out::STOP_SUCCESS_MSG
+        expected_message = current_command::STOP_SUCCESS_MSG
 
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
@@ -45,14 +46,12 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "help" do
       let(:payload) do
-        create(:slack_out_command_payload).tap {|pay| pay.text = "out help" }
+        create(:slack_payload).tap {|pay| pay.text = "help out" }
       end
 
       it "responds with command instructions" do
-        expected_message = SlashCommand::Commands::Out::HELP
-
         expect(response).to have_http_status(200)
-        expect(response.body).to be == expected_message
+        expect(response.body).to be == current_command.help
       end
     end
   end

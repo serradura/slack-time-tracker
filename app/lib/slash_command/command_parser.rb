@@ -20,10 +20,6 @@ module SlashCommand
       @data ||= @raw_data.join(EMPTY_SPACE)
     end
 
-    def help?
-      data.tap(&:downcase!).include? "help"
-    end
-
     private
 
     def normalize(text)

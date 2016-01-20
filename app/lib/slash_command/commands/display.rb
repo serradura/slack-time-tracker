@@ -20,7 +20,6 @@ module SlashCommand
       private
 
       def result
-        return HELP if help?
         return NO_HISTORY_ACTIVITY if user.time_entries.empty?
 
         display_time_entries

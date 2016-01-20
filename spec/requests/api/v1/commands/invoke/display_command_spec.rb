@@ -10,7 +10,9 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there are no activities registered" do
-      let(:payload) { create(:slack_display_command_payload) }
+      let(:payload) do
+        create(:slack_payload).tap {|pay| pay.text = "display" }
+      end
 
       it "responds with no activities message" do
         expected_message = SlashCommand::Commands::Display::NO_HISTORY_ACTIVITY
@@ -48,11 +50,11 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "help" do
       let(:payload) do
-        create(:slack_display_command_payload).tap {|pay| pay.text = "display help" }
+        create(:slack_payload).tap {|pay| pay.text = "help display" }
       end
 
       it "responds with command instructions" do
-        expected_message = SlashCommand::Commands::Display::HELP
+        expected_message = SlashCommand::Commands::Display.help
 
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message

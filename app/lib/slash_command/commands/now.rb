@@ -5,7 +5,6 @@ module SlashCommand
     class Now < Template
       NAME = "now"
       DESC = "This command shows information about the current activity"
-
       HELP = <<-HELP.strip_heredoc.freeze
         Shows spent time in current activity.
         usage: `/tt in [NOTE]`
@@ -21,7 +20,6 @@ module SlashCommand
       private
 
       def result
-        return HELP if help?
         return now_message if user.running_activity?
 
         NO_CURRENT_ACTIVITY

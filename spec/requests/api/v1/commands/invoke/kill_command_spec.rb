@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:current_command) { SlashCommand::Commands::Kill }
+
   describe "'kill' command" do
     before do
       post api_v1_commands_invoke_path, payload.to_h
@@ -8,11 +10,11 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "unknown kill command" do
       let(:payload) do
-        create(:slack_kill_command_payload).tap {|pay| pay.text = "kill#{[' ', "\n", "\t", ' okay'].sample * rand(20)}" }
+        create(:slack_payload).tap {|pay| pay.text = "kill #{Faker::Lorem.word}" }
       end
 
       it "return a unknown message and a command help" do
-        expected_message = SlashCommand::Commands::Kill::COMMAND_NOT_VALID
+        expected_message = current_command::COMMAND_NOT_VALID
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
       end
@@ -22,7 +24,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       context "activity in progress" do
         let(:current_user) { User.last }
         let(:payload) do
-          create(:slack_in_command_payload)
+          create(:slack_payload).tap {|pay| pay.text = "in foo bar" }
         end
 
         before do
@@ -31,20 +33,20 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         end
 
         it "return a success message and delete the last activity" do
-          expected_message = SlashCommand::Commands::Kill::ACTIVITY_DELETED
+          expected_message = current_command::ACTIVITY_DELETED
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
-          expect(current_user.running_activity?).to be false
+          expect(current_user.running_activity?).to be_falsey
         end
       end
 
       context "activity not progress" do
         let(:payload) do
-          create(:slack_kill_command_payload)
+          create(:slack_payload).tap {|pay| pay.text = "kill current" }
         end
 
         it "return with a message that activity is not running " do
-          expected_message = SlashCommand::Commands::Kill::ACTIVITY_NOT_RUNNING_MSG
+          expected_message = current_command::ACTIVITY_NOT_RUNNING_MSG
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
         end
@@ -53,13 +55,12 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "help" do
       let(:payload) do
-        create(:slack_kill_command_payload).tap {|pay| pay.text = "kill help" }
+        create(:slack_payload).tap {|pay| pay.text = "help kill" }
       end
 
       it "responds with command instructions" do
-        expected_message = SlashCommand::Commands::Kill::HELP
         expect(response).to have_http_status(200)
-        expect(response.body).to be == expected_message
+        expect(response.body).to be == current_command.help
       end
     end
   end

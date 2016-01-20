@@ -21,7 +21,6 @@ module SlashCommand
       private
 
       def result
-        return HELP if help?
         return EMPTY_NOTE_MSG if data.blank?
         return ACTIVITY_NOT_RUNNING_MSG unless user.running_activity?
 

@@ -5,7 +5,6 @@ module SlashCommand
     class What < Template
       NAME = "what"
       DESC = "This command will show all the event lectures."
-
       HELP = <<-HELP.strip_heredoc.freeze
         List all event lectures.
         usage: `/tt what`
@@ -20,7 +19,7 @@ module SlashCommand
       TEMPLATE
 
       def call
-        response.result = help? ? HELP : TEMPLATE
+        response.result = TEMPLATE
       end
     end
   end

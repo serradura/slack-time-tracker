@@ -19,7 +19,6 @@ module SlashCommand
 
       def result
         return EMPTY_NOTE_MSG if data.blank?
-        return HELP if help?
 
         create_activity
       end
