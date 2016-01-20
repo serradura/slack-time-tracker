@@ -20,7 +20,7 @@ module SlashCommand
 
       def self.list
         commands
-          .map {|command| "#{command.name!}\t|\t#{command.description}" }
+          .map {|command| "#{command.name!}\t| #{command.description}" }
           .join("\n")
           .tap(&:strip!)
       end
