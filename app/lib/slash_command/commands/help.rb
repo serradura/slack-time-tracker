@@ -3,23 +3,41 @@
 module SlashCommand
   module Commands
     class Help < Template
-      CACHE = {data: nil}
+      CACHE = {help: nil}
 
+      NAME = "help"
       DESC = "Display help information about \"/tt\""
 
-      def call
-        response.result = result
+      def self.help
+        CACHE[:help] ||= "Available commands:\n#{list}".freeze
       end
 
-      def result
-        CACHE[:data] ||= "Available commands:\n#{commands_help}".freeze
+      def self.commands
+        SlashCommand::Invoke.commands
       end
 
-      def commands_help
-        SlashCommand::Invoke::COMMANDS
-          .map {|name, command| "#{name}\t|\t#{command.description}" }
+      def self.list
+        commands
+          .map {|command| "#{command.name!}\t|\t#{command.description}" }
           .join("\n")
-          .strip
+          .tap(&:strip!)
+      end
+      private_class_method :list
+
+      def call
+        command = help_command? ? self.class : commands.fetch(data.downcase)
+
+        response.result = command.help
+      end
+
+      private
+
+      def help_command?
+        name == self.class.name! && data.blank?
+      end
+
+      def commands
+        self.class.commands
       end
     end
   end

@@ -3,8 +3,8 @@
 module SlashCommand
   module Commands
     class Today < Template
+      NAME = "today"
       DESC = "Display activities from today."
-
       HELP = <<-HELP.strip_heredoc.freeze
         Show all today activities.
         usage: `/tt today`
@@ -19,7 +19,6 @@ module SlashCommand
       private
 
       def result
-        return help if help?
         return NO_HISTORY_ACTIVITY unless relation.present?
 
         show_time_entries_from_today

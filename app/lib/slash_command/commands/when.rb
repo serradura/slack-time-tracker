@@ -1,8 +1,8 @@
 module SlashCommand
   module Commands
     class When < Template
+      NAME = "when"
       DESC = "This command will show the next events."
-      
       HELP = <<-HELP.strip_heredoc.freeze
         Show the next events.
         usage: `/tt when`
@@ -17,15 +17,7 @@ module SlashCommand
       BODY
 
       def call
-        response.result = result
-      end
-
-      def result
-        if help?
-          HELP
-        else
-          TEMPLATE % {user_name: user.name}
-        end
+        response.result = TEMPLATE % {user_name: user.name}
       end
     end
   end

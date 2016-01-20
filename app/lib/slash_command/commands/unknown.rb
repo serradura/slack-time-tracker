@@ -3,10 +3,10 @@
 module SlashCommand
   module Commands
     class Unknown < Template
-      UNKNOWN_COMMAND = "There’s no such command."
+      HELP = "There’s no such command."
 
       def call
-        response.result = UNKNOWN_COMMAND
+        response.result = HELP
       end
     end
   end

@@ -3,8 +3,8 @@
 module SlashCommand
   module Commands
     class Edit < Template
+      NAME = "edit"
       DESC = "This command will update the current activity note."
-
       HELP = <<-HELP.strip_heredoc.freeze
         Update the note of the current activity.
         usage: `/tt edit [NOTE]`
@@ -21,7 +21,6 @@ module SlashCommand
       private
 
       def result
-        return HELP if help?
         return EMPTY_NOTE_MSG if data.blank?
         return ACTIVITY_NOT_RUNNING_MSG unless user.running_activity?
 

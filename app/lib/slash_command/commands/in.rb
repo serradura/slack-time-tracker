@@ -3,6 +3,7 @@
 module SlashCommand
   module Commands
     class In < Template
+      NAME = "in"
       DESC = "This command will start a new activity."
       HELP = "Start the timer for a new activity. Usage: `/tt in [NOTE]"
 
@@ -18,7 +19,6 @@ module SlashCommand
 
       def result
         return EMPTY_NOTE_MSG if data.blank?
-        return HELP if help?
 
         create_activity
       end

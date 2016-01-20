@@ -1,29 +1,32 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:current_command) { SlashCommand::Commands::Edit }
+
   describe "'edit' command" do
+    let(:current_user) { User.last }
+
     before do
       post api_v1_commands_invoke_path, payload.to_h
     end
-
-    let(:current_user) { User.last }
 
     context "there is a running activity" do
       NOTE = "test"
 
       let(:payload) do
-        create(:slack_in_command_payload).tap {|pay| pay.text = "in #{NOTE}" }
+        create(:slack_payload).tap {|pay| pay.text = "in #{NOTE}" }
       end
 
       context "there is note" do
         NOTE_CHANGE = "test2"
+
         before do
           payload.text = "edit #{NOTE_CHANGE}"
           post api_v1_commands_invoke_path, payload.to_h
         end
 
         it "responds with not allowed empty note activity" do
-          expected_message = SlashCommand::Commands::Edit::ACTIVITY_EDITED
+          expected_message = current_command::ACTIVITY_EDITED
 
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
@@ -38,7 +41,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         end
 
         it "responds with not allowed empty note activity" do
-          expected_message = SlashCommand::Commands::Edit::EMPTY_NOTE_MSG
+          expected_message = current_command::EMPTY_NOTE_MSG
 
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
@@ -49,11 +52,11 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "there is no running activity" do
       let(:payload) do
-        create(:slack_edit_command_payload)
+        create(:slack_payload).tap {|pay| pay.text = "edit foo" }
       end
 
       it "responds with a message that activity is not running" do
-        expected_message = SlashCommand::Commands::Edit::ACTIVITY_NOT_RUNNING_MSG
+        expected_message = current_command::ACTIVITY_NOT_RUNNING_MSG
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
       end
@@ -61,13 +64,12 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "help" do
       let(:payload) do
-        create(:slack_edit_command_payload).tap {|pay| pay.text = "edit help" }
+        create(:slack_payload).tap {|pay| pay.text = "help edit" }
       end
 
       it "responds with command instructions" do
-        expected_message = SlashCommand::Commands::Edit::HELP
         expect(response).to have_http_status(200)
-        expect(response.body).to be == expected_message
+        expect(response.body).to be == current_command.help
       end
     end
   end

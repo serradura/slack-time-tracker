@@ -5,8 +5,8 @@ module SlashCommand
     class Display < Template
       LIMIT = 50
 
+      NAME = "display"
       DESC = "Display #{LIMIT} entries information."
-
       HELP = <<-HELP.strip_heredoc.freeze
         Show all activities in history. Usage: `/tt display`
       HELP
@@ -20,7 +20,6 @@ module SlashCommand
       private
 
       def result
-        return HELP if help?
         return NO_HISTORY_ACTIVITY if user.time_entries.empty?
 
         display_time_entries

@@ -1,28 +1,14 @@
-# frozen_string_literal: true
-
 module SlashCommand
   class Invoke
-    COMMANDS_BUILDER = lambda do |tt_commands, test_commands|
-      tt_commands.merge!(test_commands) unless Rails.env.production?
-      tt_commands.freeze
+    COMMANDS = {cache: nil}
+
+    def self.setup(commands)
+      COMMANDS[:cache] ||= CommandsContainer.new(commands)
     end
 
-    TT_COMMANDS = {
-      "in"  => Commands::In,
-      "out" => Commands::Out,
-      "now" => Commands::Now,
-      "edit" => Commands::Edit,
-      "kill" => Commands::Kill,
-      "today" => Commands::Today,
-      "display" => Commands::Display
-    }.update("help" => Commands::Help)
-
-    TEST_COMMANDS = {
-      "when" => Commands::When,
-      "what" => Commands::What
-    }
-
-    COMMANDS = COMMANDS_BUILDER.call(TT_COMMANDS, TEST_COMMANDS)
+    def self.commands
+      COMMANDS[:cache]
+    end
 
     def self.command_with(params)
       new(params).command.tap(&:call)
@@ -35,12 +21,14 @@ module SlashCommand
     end
 
     def command
-      strategy = @validator.ok? ? find_command : Commands::TokenError
+      strategy = @validator.ok? ? fetch_command : Commands::TokenError
       strategy.new(@payload, @parsed_command)
     end
 
-    def find_command
-      COMMANDS.fetch(@parsed_command.name, Commands::Unknown)
+    private
+
+    def fetch_command
+      self.class.commands.fetch(@parsed_command.name)
     end
   end
 end
