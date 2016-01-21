@@ -14,7 +14,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       end
 
       it "return a unknown message and a command help" do
-        expected_message = current_command::COMMAND_NOT_VALID
+        expected_message = current_command::INVALID_COMMAND
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
       end
@@ -33,7 +33,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         end
 
         it "return a success message and delete the last activity" do
-          expected_message = current_command::ACTIVITY_DELETED
+          expected_message = current_command::Current::ACTIVITY_DELETED
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
           expect(current_user.running_activity?).to be_falsey
@@ -46,7 +46,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         end
 
         it "return with a message that activity is not running " do
-          expected_message = current_command::ACTIVITY_NOT_RUNNING_MSG
+          expected_message = current_command::Current::ACTIVITY_NOT_RUNNING
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
         end

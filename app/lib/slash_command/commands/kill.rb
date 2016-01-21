@@ -10,10 +10,7 @@ module SlashCommand
         usage: `/tt kill current`
       HELP
 
-      CURRENT_OPTION = "current"
-      ACTIVITY_DELETED = "It's dead. (R.I.P :goberserk:)"
-      COMMAND_NOT_VALID = "This command is not valid. Use `/tt kill current`"
-      ACTIVITY_NOT_RUNNING_MSG = "There’s no activity to kill. Are you some sort of serial killer?"
+      INVALID_COMMAND = "This command is not valid. Check `/tt help kill`"
 
       def call
         response.result = result
@@ -22,23 +19,11 @@ module SlashCommand
       private
 
       def result
-        return execute_current_option if current_option?
+        current = Current.new(self)
 
-        COMMAND_NOT_VALID
-      end
+        return current.call if current.invoked?
 
-      def current_option?
-        data.tap(&:downcase!).include?(CURRENT_OPTION)
-      end
-
-      def execute_current_option
-        if user.running_activity?
-          user.running_activity.delete
-
-          ACTIVITY_DELETED
-        else
-          ACTIVITY_NOT_RUNNING_MSG
-        end
+        INVALID_COMMAND
       end
     end
   end
