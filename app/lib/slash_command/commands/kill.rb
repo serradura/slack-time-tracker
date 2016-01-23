@@ -10,6 +10,8 @@ module SlashCommand
         usage: `/tt kill current`
       HELP
 
+      STRATEGIES = [Current, Last].freeze
+
       INVALID_COMMAND = "This command is not valid. Check `/tt help kill`"
 
       def call
@@ -19,11 +21,17 @@ module SlashCommand
       private
 
       def result
-        current = Current.new(self)
+        strategy = find_strategy
 
-        return current.call if current.invoked?
+        return strategy.tap(&:call).message if strategy.present?
 
         INVALID_COMMAND
+      end
+
+      def find_strategy
+        handler = Handler.new(self)
+        strategies = STRATEGIES.map {|strategy| strategy.new(handler) }
+        strategies.find(&:invoked?)
       end
     end
   end

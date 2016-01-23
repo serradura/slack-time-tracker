@@ -3,13 +3,14 @@
 module SlashCommand
   module Commands
     class Kill
-      class Current
-        OPTION = "current"
+      class Last
+        OPTION = "last"
 
         delegate :user, :message, to: :@handler
 
         def initialize(handler)
           @handler = handler
+          @current ||= Current.new(handler)
         end
 
         def invoked?
@@ -17,9 +18,17 @@ module SlashCommand
         end
 
         def call
-          @handler.delete_when user.running_activity? do
-            user.running_activity.delete
+          @current.call
+
+          @handler.delete_when last_activity.present? do
+            last_activity.delete
           end
+        end
+
+        private
+
+        def last_activity
+          @last_activity ||= user.time_entries.last
         end
       end
     end
