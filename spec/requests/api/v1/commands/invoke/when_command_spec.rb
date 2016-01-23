@@ -1,15 +1,13 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "when" }
   let(:current_command) { SlashCommand::Commands::When }
 
   describe "'when' command" do
     before do
       post api_v1_commands_invoke_path, payload.to_h
-    end
-
-    let(:payload) do
-      create(:slack_payload).tap {|pay| pay.text = "when" }
     end
 
     it "responds with the event location" do
@@ -22,9 +20,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help when" }
-      end
+      let(:payload_text) { "help when" }
 
       it "responds with command instructions" do
         expect(response).to have_http_status(200)

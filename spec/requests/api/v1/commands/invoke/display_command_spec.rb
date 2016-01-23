@@ -1,6 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "display" }
+
   describe "'display' command" do
     let(:current_user) { User.last }
 
@@ -10,10 +13,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there are no activities registered" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "display" }
-      end
-
       it "responds with no activities message" do
         expected_message = SlashCommand::Commands::Display::NO_HISTORY_ACTIVITY
         expect(response).to have_http_status(200)
@@ -23,8 +22,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "user has registered activities to display" do
-      let(:payload) { create(:slack_payload) }
-
       before do
         payload.text = "in test 1"
         post api_v1_commands_invoke_path, payload.to_h
@@ -49,9 +46,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help display" }
-      end
+      let(:payload_text) { "help display" }
 
       it "responds with command instructions" do
         expected_message = SlashCommand::Commands::Display.help

@@ -1,16 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "help" }
   let(:current_command) { SlashCommand::Commands::Help }
   let(:template_command) { SlashCommand::Commands::Template }
 
   describe "'help' command" do
     before do
       post api_v1_commands_invoke_path, payload.to_h
-    end
-
-    let(:payload) do
-      create(:slack_payload).tap {|pay| pay.text = "help" }
     end
 
     it "responds with all commands help descriptions" do
@@ -21,9 +19,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help help" }
-      end
+      let(:payload_text) { "help help" }
 
       # TODO: DRY with shared examples.
       it "responds with command instructions" do
@@ -35,9 +31,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "unknown help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help #{Faker::Lorem.word}" }
-      end
+      let(:payload_text) { "help #{Faker::Lorem.word}" }
 
       it "responds with unknown command message" do
         expect(response).to have_http_status(200)

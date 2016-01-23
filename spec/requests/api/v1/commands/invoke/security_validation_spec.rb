@@ -7,7 +7,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "with an invalid token" do
-      let(:payload) { create(:slack_payload).tap {|pay| pay.token = Faker::Lorem.characters(24) } }
+      let(:payload) { create :slack_payload, token: Faker::Lorem.characters(24) }
 
       it "responds with an error message" do
         expect(response).to have_http_status(200)

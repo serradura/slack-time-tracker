@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "now" }
   let(:current_command) { SlashCommand::Commands::Now }
 
   describe "'now' command" do
@@ -10,10 +12,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
     context "there is no running activity" do
       let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "now" }
-      end
 
       it "responds with no current activity message" do
         expected_message = current_command::NO_CURRENT_ACTIVITY
@@ -25,10 +23,6 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "user has a current activity" do
-      let(:payload) do
-        create(:slack_payload)
-      end
-
       before do
         payload.text = "in test"
         post api_v1_commands_invoke_path, payload.to_h
@@ -44,9 +38,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help now" }
-      end
+      let(:payload_text) { "help now" }
 
       it "responds with command instructions" do
         expect(response).to have_http_status(200)

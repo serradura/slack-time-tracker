@@ -1,19 +1,17 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "out" }
+  let(:current_user) { User.last }
   let(:current_command) { SlashCommand::Commands::Out }
+
   describe "'out' command" do
     before do
       post api_v1_commands_invoke_path, payload.to_h
     end
 
     context "there is no running activity" do
-      let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "out" }
-      end
-
       it "responds with a message that activity is not running" do
         expected_message = current_command::ACTIVITY_NOT_RUNNING_MSG
 
@@ -24,14 +22,10 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there is a running activity" do
-      let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "in test" }
-      end
+      let(:payload_text) { "in test" }
 
       before do
-        payload.text = "out#{[' ', "\n", "\t"].sample * rand(20)}"
+        payload.text = "out \t\n "
         post api_v1_commands_invoke_path, payload.to_h
       end
 
@@ -45,9 +39,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help out" }
-      end
+      let(:payload_text) { "help out" }
 
       it "responds with command instructions" do
         expect(response).to have_http_status(200)

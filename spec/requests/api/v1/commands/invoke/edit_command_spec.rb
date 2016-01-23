@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "edit" }
   let(:current_command) { SlashCommand::Commands::Edit }
 
   describe "'edit' command" do
@@ -11,17 +13,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there is a running activity" do
-      NOTE = "test"
-
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "in #{NOTE}" }
-      end
+      let(:payload_note) { "test" }
+      let(:payload_text) { "in #{payload_note}" }
 
       context "there is note" do
-        NOTE_CHANGE = "test2"
+        let(:another_payload_note) { "test test" }
 
         before do
-          payload.text = "edit #{NOTE_CHANGE}"
+          payload.text = "edit #{another_payload_note}"
           post api_v1_commands_invoke_path, payload.to_h
         end
 
@@ -30,30 +29,24 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
-          expect(current_user.running_activity.note).to be == NOTE_CHANGE
+          expect(current_user.running_activity.note).to be == another_payload_note
         end
       end
 
       context "there is no note" do
-        before do
-          payload.text = "edit#{[' ', "\n", "\t"].sample * rand(20)}"
-          post api_v1_commands_invoke_path, payload.to_h
-        end
+        let(:payload_text) { "edit \t\n " }
 
         it "responds with not allowed empty note activity" do
           expected_message = current_command::EMPTY_NOTE_MSG
 
           expect(response).to have_http_status(200)
           expect(response.body).to be == expected_message
-          expect(current_user.running_activity.note).to be == NOTE
         end
       end
     end
 
     context "there is no running activity" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "edit foo" }
-      end
+      let(:payload_text) { "edit foo" }
 
       it "responds with a message that activity is not running" do
         expected_message = current_command::ACTIVITY_NOT_RUNNING_MSG
@@ -63,9 +56,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help edit" }
-      end
+      let(:payload_text) { "help edit" }
 
       it "responds with command instructions" do
         expect(response).to have_http_status(200)

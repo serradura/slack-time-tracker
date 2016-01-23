@@ -1,6 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/v1/commands/invoke", type: :request do
+  let(:payload) { create(:slack_payload).tap {|pay| pay.text = payload_text } }
+  let(:payload_text) { "in" }
+  let(:current_user) { User.last }
   let(:current_command) { SlashCommand::Commands::In }
 
   describe "'in' command" do
@@ -9,11 +12,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there is a running activity" do
-      let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "in test" }
-      end
+      let(:payload_text) { "in test" }
 
       before do
         payload.text = "in note"
@@ -30,11 +29,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there is no running activity" do
-      let(:current_user) { User.last }
-
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "in foo" }
-      end
+      let(:payload_text) { "in foo" }
 
       it "responds with a new activity entry message" do
         expected_message = current_command::NEW_ACTIVITY_CREATED
@@ -46,9 +41,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "there is no note" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "in#{[' ', "\n", "\t"].sample * rand(20)}" }
-      end
+      let(:payload_text) { "in \t\n " }
 
       it "responds with not allowed empty note activity" do
         expected_message = current_command::EMPTY_NOTE_MSG
@@ -59,9 +52,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
     end
 
     context "help" do
-      let(:payload) do
-        create(:slack_payload).tap {|pay| pay.text = "help in" }
-      end
+      let(:payload_text) { "help in" }
 
       it "responds with command instructions" do
         expect(response).to have_http_status(200)
