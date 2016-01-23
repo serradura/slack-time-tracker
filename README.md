@@ -2,6 +2,8 @@
 
 This project is based on [TimeTrap](https://github.com/samg/timetrap).
 
+[![Code Climate](https://codeclimate.com/github/serradura/slack-time-tracker/badges/gpa.svg)](https://codeclimate.com/github/serradura/slack-time-tracker)
+
 ## Ruby version
 2.3.0
 
