@@ -1,5 +1,6 @@
 # Slack Time Tracker Command
-This project is based on post: [Building a Slack slash command with Sinatra, Finch and Heroku](https://wearestac.com/blog/building-a-slack-slash-command-with-sinatra-finch-and-heroku)
+
+This project is based on [TimeTrap](https://github.com/samg/timetrap).
 
 ## Ruby version
 2.3.0
