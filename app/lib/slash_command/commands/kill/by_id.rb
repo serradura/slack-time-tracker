@@ -3,8 +3,8 @@
 module SlashCommand
   module Commands
     class Kill
-      class Current
-        OPTION = /current/.freeze
+      class ById
+        OPTION = /(\-i|\-\-id)\s+(\d+)/.freeze
 
         delegate :user, :message, to: :@handler
 
@@ -17,7 +17,17 @@ module SlashCommand
         end
 
         def call
-          @handler.delete user.running_activity
+          @handler.delete time_entry
+        end
+
+        private
+
+        def time_entry
+          user.time_entries.find_by id: time_entry_id
+        end
+
+        def time_entry_id
+          @handler.matches[2]
         end
       end
     end
