@@ -7,24 +7,24 @@ module SlashCommand
         ACTIVITY_DELETED = "It's dead. (R.I.P :goberserk:)"
         ACTIVITY_NOT_RUNNING = "There’s no activity to kill. Are you some sort of serial killer?"
 
-        attr_reader :message, :user
+        attr_reader :message, :user, :matches
 
         def initialize(command)
           @user = command.user
           @data = command.data.downcase
-          @deleted = false
+          @executed = false
           @message = ACTIVITY_NOT_RUNNING
         end
 
         def invoke?(option)
-          @data.include?(option)
+          @matches = @data.match(option)
         end
 
-        def delete_when(truth)
-          return if !truth || @deleted
+        def delete(time_entry)
+          return if @executed || time_entry.blank?
+          time_entry.delete
 
-          yield
-          @deleted = true
+          @executed = true
           @message = ACTIVITY_DELETED
         end
       end

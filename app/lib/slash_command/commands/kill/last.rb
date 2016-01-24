@@ -4,7 +4,7 @@ module SlashCommand
   module Commands
     class Kill
       class Last
-        OPTION = "last"
+        OPTION = /last/.freeze
 
         delegate :user, :message, to: :@handler
 
@@ -20,15 +20,13 @@ module SlashCommand
         def call
           @current.call
 
-          @handler.delete_when last_activity.present? do
-            last_activity.delete
-          end
+          @handler.delete last_time_entry
         end
 
         private
 
-        def last_activity
-          @last_activity ||= user.time_entries.last
+        def last_time_entry
+          user.time_entries.last
         end
       end
     end

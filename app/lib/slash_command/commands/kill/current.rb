@@ -4,7 +4,7 @@ module SlashCommand
   module Commands
     class Kill
       class Current
-        OPTION = "current"
+        OPTION = /current/.freeze
 
         delegate :user, :message, to: :@handler
 
@@ -17,9 +17,7 @@ module SlashCommand
         end
 
         def call
-          @handler.delete_when user.running_activity? do
-            user.running_activity.delete
-          end
+          @handler.delete user.running_activity
         end
       end
     end
