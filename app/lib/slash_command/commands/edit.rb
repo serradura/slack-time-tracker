@@ -22,7 +22,7 @@ module SlashCommand
 
       def result
         return EMPTY_NOTE_MSG if data.blank?
-        return ACTIVITY_NOT_RUNNING_MSG unless user.running_activity?
+        return ACTIVITY_NOT_RUNNING_MSG unless user.running_activity.present?
 
         update_activity
       end

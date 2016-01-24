@@ -20,7 +20,7 @@ module SlashCommand
       private
 
       def result
-        return now_message if user.running_activity?
+        return now_message if user.running_activity.present?
 
         NO_CURRENT_ACTIVITY
       end

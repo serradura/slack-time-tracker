@@ -21,10 +21,6 @@ class User < ActiveRecord::Base
     slack_name
   end
 
-  def running_activity?
-    running_activity.present?
-  end
-
   def running_activity
     @running_activity ||= time_entries.find_by end: nil
   end

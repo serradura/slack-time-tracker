@@ -17,7 +17,7 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         expected_message = SlashCommand::Commands::Display::NO_HISTORY_ACTIVITY
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
-        expect(current_user.running_activity?).to be_falsey
+        expect(current_user.running_activity).to be_blank
       end
     end
 
