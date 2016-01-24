@@ -10,7 +10,7 @@ module SlashCommand
         usage: `/tt kill current`
       HELP
 
-      STRATEGIES = [Current, Last].freeze
+      STRATEGIES = [Current, Last, ById].freeze
 
       INVALID_COMMAND = "This command is not valid. Check `/tt help kill`"
 
