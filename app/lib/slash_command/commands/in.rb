@@ -30,7 +30,7 @@ module SlashCommand
                     NEW_ACTIVITY_CREATED
                   end
 
-        user.time_entries.create(date: Date.current, start: Time.current, note: data)
+        user.build_time_entry(note: data).tap(&:save)
 
         message
       end

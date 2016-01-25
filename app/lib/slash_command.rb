@@ -12,6 +12,7 @@ module SlashCommand
                  Commands::Now,
                  Commands::Edit,
                  Commands::Kill,
+                 Commands::Resume,
                  Commands::Display,
                  Commands::Today,
                  Commands::Yesterday
