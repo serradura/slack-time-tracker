@@ -28,4 +28,10 @@ class User < ActiveRecord::Base
   def stop_running_activity
     running_activity.try(:update_attribute, :end, Time.current)
   end
+
+  def build_time_entry(note: nil)
+    current_time = Time.current
+
+    time_entries.build date: current_time.to_date, start: current_time, note: note
+  end
 end
