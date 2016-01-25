@@ -75,6 +75,35 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
       end
     end
 
+    context "and one <id> was passed (using the -i option)" do
+      let(:note) { "first entry note" }
+      let(:payload_text) { "in #{note}" }
+
+      before do
+        payload.text = "out"
+        post api_v1_commands_invoke_path, payload.to_h
+
+        payload.text = "in second entry note"
+        post api_v1_commands_invoke_path, payload.to_h
+
+        payload.text = "out"
+        post api_v1_commands_invoke_path, payload.to_h
+
+        payload.text = "resume -i #{current_user.time_entries.first.id}"
+        post api_v1_commands_invoke_path, payload.to_h
+      end
+
+      it "stop activity and responds with a message" do
+        expected_message = current_command::ACTIVITY_RESTARTED
+
+        expect(response).to have_http_status(200)
+        expect(response.body).to be == expected_message
+
+        expect(current_user.running_activity).to be_present
+        expect(current_user.running_activity.note).to be == note
+      end
+    end
+
     context "help" do
       let(:payload_text) { "help resume" }
 
