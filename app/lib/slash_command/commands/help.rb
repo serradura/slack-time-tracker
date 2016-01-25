@@ -8,7 +8,7 @@ module SlashCommand
       delegate :commands, :name!, to: :class
 
       NAME = "help"
-      DESC = "Display help information about \"/tt\""
+      DESC = "Display this help."
 
       def self.commands
         Invoke.commands
