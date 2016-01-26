@@ -14,6 +14,8 @@ module SlashCommand
       ACTIVITY_EDITED = "The activity was updated!"
       ACTIVITY_NOT_RUNNING_MSG = "Hey, what's going on? Let's start an activity first! (e.g: `/tt in <NOTE>`)".freeze
 
+      ID_PATTERN = /(\-i|\-\-id)\s+(\d+)/.freeze
+
       def call
         response.result = result
       end
@@ -22,13 +24,30 @@ module SlashCommand
 
       def result
         return EMPTY_NOTE_MSG if data.blank?
-        return ACTIVITY_NOT_RUNNING_MSG unless user.running_activity.present?
 
-        update_activity
+        time_entry = find_time_entry
+
+        return ACTIVITY_NOT_RUNNING_MSG if time_entry.blank?
+
+        update time_entry
       end
 
-      def update_activity
-        user.running_activity.update_attribute(:note, data)
+      def id_data
+        @id_data ||= data.match(ID_PATTERN)
+      end
+
+      def find_time_entry
+        if id_data.present?
+          user.time_entries.find_by id: id_data[2]
+        else
+          user.running_activity
+        end
+      end
+
+      def update(time_entry)
+        note = id_data.present? ? data.sub!(id_data[0], "").tap(&:strip!) : data
+
+        time_entry.update_attribute(:note, note)
 
         ACTIVITY_EDITED
       end
