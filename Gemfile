@@ -4,6 +4,7 @@ ruby "2.3.0"
 
 gem "rails", "4.2.5"
 gem "rails-api", "~> 0.4.0"
+gem "chronic", "~> 0.10.2"
 
 group :production do
   gem "pg", "~> 0.18.4"
