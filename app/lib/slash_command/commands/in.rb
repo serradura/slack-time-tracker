@@ -4,33 +4,45 @@ module SlashCommand
   module Commands
     class In < Template
       NAME = "in"
-      DESC = "This command will start a new activity."
-      HELP = "Start the timer for a new activity. Usage: `/tt in [NOTE]"
+      DESC = "Start the timer for a new activity."
+      HELP = <<-HELP.strip_heredoc.freeze
+        Usage: `/tt` in [NOTE] [--at TIME]
+        -a, --at <time:qs> Use this time instead of now.
+
+        Examples:
+        `/tt in -a "5 minutes ago"`
+        `/tt in --at '17:00'`
+      HELP
 
       EMPTY_NOTE_MSG = "You need a note to this activity!"
       NEW_ACTIVITY_CREATED = "You have just started working on a new activity. Keep going."
       STOPED_LAST_CREATED_NEW = "The previous activity was stopped and the next one just started."
 
+      AT_PATTERN = /(\-a|\-\-at)\s?(["'].+["'])/.freeze
+
       def call
-        response.result = result
+        response.result = data.blank? ? EMPTY_NOTE_MSG : create_time_entry
       end
 
       private
 
-      def result
-        return EMPTY_NOTE_MSG if data.blank?
-
-        create_activity
+      def at_option
+        @at_option ||= data.match(AT_PATTERN)
       end
 
-      def create_activity
-        message = if user.stop_running_activity
-                    STOPED_LAST_CREATED_NEW
-                  else
-                    NEW_ACTIVITY_CREATED
-                  end
+      def start_time
+        at_option.present? ? Chronic.parse(at_option[2]) : Time.current
+      end
 
-        user.build_time_entry(note: data).tap(&:save)
+      def note
+        at_option.present? ? data.sub!(at_option[0], "").tap(&:strip!) : data
+      end
+
+      def create_time_entry
+        message = NEW_ACTIVITY_CREATED
+        message = STOPED_LAST_CREATED_NEW if user.stop_running_activity
+
+        user.build_time_entry(start: start_time, note: note).tap(&:save)
 
         message
       end

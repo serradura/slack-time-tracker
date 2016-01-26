@@ -43,6 +43,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
           expect(current_user.running_activity).to be_present
           expect(current_user.time_entries.where(note: note).count).to be == 2
         end
+
+        context "with --at flag" do
+          pending
+        end
+
+        context "with -a flag" do
+          pending
+        end
       end
 
       context "and one <id> was passed" do
@@ -71,6 +79,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
           expect(current_user.running_activity).to be_present
           expect(current_user.running_activity.note).to be == note
+        end
+
+        context "with --at flag" do
+          pending
+        end
+
+        context "with -a flag" do
+          pending
         end
       end
     end
@@ -101,6 +117,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
 
         expect(current_user.running_activity).to be_present
         expect(current_user.running_activity.note).to be == note
+      end
+
+      context "with --at flag" do
+        pending
+      end
+
+      context "with -a flag" do
+        pending
       end
     end
 
