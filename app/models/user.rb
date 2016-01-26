@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
     running_activity.try(:update_attribute, :end, Time.current)
   end
 
-  def build_time_entry(note: nil)
-    current_time = Time.current
+  def build_time_entry(start: nil, note: nil)
+    current_time = start || Time.current
 
     time_entries.build date: current_time.to_date, start: current_time, note: note
   end
