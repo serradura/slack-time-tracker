@@ -4,10 +4,14 @@ module SlashCommand
   module Commands
     class Edit < Template
       NAME = "edit"
-      DESC = "This command will update the current activity note."
+      DESC = "Alter an entry's note. Defaults to the running entry."
       HELP = <<-HELP.strip_heredoc.freeze
-        Update the note of the current activity.
-        usage: `/tt edit [NOTE]`
+        Usage: `/tt` edit [NOTE] [--id ID]
+        -i, --id <id:i> Alter entry with id <id> instead of the running entry
+
+        Examples:
+        `/tt edit update current entry note.`
+        `/tt edit -i 99 update a specific entry note.`
       HELP
 
       EMPTY_NOTE_MSG = "You need a note to this update!"
@@ -32,20 +36,20 @@ module SlashCommand
         update time_entry
       end
 
-      def id_data
-        @id_data ||= data.match(ID_PATTERN)
+      def id_option
+        @id_option ||= data.match(ID_PATTERN)
       end
 
       def find_time_entry
-        if id_data.present?
-          user.time_entries.find_by id: id_data[2]
+        if id_option.present?
+          user.time_entries.find_by id: id_option[2]
         else
           user.running_activity
         end
       end
 
       def update(time_entry)
-        note = id_data.present? ? data.sub!(id_data[0], "").tap(&:strip!) : data
+        note = id_option.present? ? data.sub!(id_option[0], "").tap(&:strip!) : data
 
         time_entry.update_attribute(:note, note)
 
