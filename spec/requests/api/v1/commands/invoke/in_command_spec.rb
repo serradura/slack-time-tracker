@@ -26,6 +26,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         expect(response.body).to be == expected_message
         expect(current_user.time_entries.where(end: nil).count).to be == 1
       end
+
+      context "with --at flag" do
+        pending
+      end
+
+      context "with -a flag" do
+        pending
+      end
     end
 
     context "there is no running activity" do
@@ -37,6 +45,14 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         expect(response).to have_http_status(200)
         expect(response.body).to be == expected_message
         expect(current_user.time_entries.count).to_not be_zero
+      end
+
+      context "with --at flag" do
+        pending
+      end
+
+      context "with -a flag" do
+        pending
       end
     end
 
