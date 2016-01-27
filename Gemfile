@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby "2.3.0"
 
-gem "rails", "4.2.5"
+gem "rails", "~> 4.2", ">= 4.2.5.1"
 gem "rails-api", "~> 0.4.0"
 gem "chronic", "~> 0.10.2"
 
