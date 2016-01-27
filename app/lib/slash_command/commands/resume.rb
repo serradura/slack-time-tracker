@@ -19,8 +19,9 @@ module SlashCommand
       NO_TIME_ENTRIES = "There’s no time entries. Please, use `/tt in NOTE` to start the timer."
       ACTIVITY_RESTARTED = "You have just started working on a new activity. Keep going."
 
+      DELIMITERS = "\"'“”‘’`"
+      AT_PATTERN = /(\-a|([-]{2}|—)at)\s?[#{DELIMITERS}](.+)[#{DELIMITERS}]/.freeze
       ID_PATTERN = /(\-i|\-\-id)\s+(\d+)/.freeze
-      AT_PATTERN = /(\-a|\-\-at)\s?(["'].+["'])/.freeze
 
       def call
         response.result = result
@@ -46,13 +47,17 @@ module SlashCommand
         end
       end
 
-      def start_time
-        at_option = data.match(AT_PATTERN)
-        at_option.present? ? Chronic.parse(at_option[2]) : Time.current
-      end
-
       def create(time_entry)
         user.build_time_entry(start: start_time, note: time_entry.note).tap(&:save)
+      end
+
+      def start_time
+        at_option = data.match(AT_PATTERN)
+        at_option.present? ? time_from(at_option) : Time.current
+      end
+
+      def time_from(at_option)
+        Chronic.parse(at_option[3])
       end
     end
   end

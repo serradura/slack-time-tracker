@@ -18,7 +18,8 @@ module SlashCommand
       NEW_ACTIVITY_CREATED = "You have just started working on a new activity. Keep going."
       STOPED_LAST_CREATED_NEW = "The previous activity was stopped and the next one just started."
 
-      AT_PATTERN = /(\-a|\-\-at)\s?(["'].+["'])/.freeze
+      DELIMITERS = "\"'“”‘’`"
+      AT_PATTERN = /(\-a|([-]{2}|—)at)\s?[#{DELIMITERS}](.+)[#{DELIMITERS}]/.freeze
 
       def call
         response.result = data.blank? ? EMPTY_NOTE_MSG : create_time_entry
@@ -31,11 +32,15 @@ module SlashCommand
       end
 
       def start_time
-        at_option.present? ? Chronic.parse(at_option[2]) : Time.current
+        at_option.present? ? Chronic.parse(at_option[3]) : Time.current
       end
 
       def note
-        at_option.present? ? data.sub!(at_option[0], "").tap(&:strip!) : data
+        at_option.present? ? note_without_at_option : data
+      end
+
+      def note_without_at_option
+        data.sub!(at_option[0], "").tap(&:strip!)
       end
 
       def create_time_entry
