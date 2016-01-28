@@ -2,6 +2,8 @@ module Api
   module V1
     class CommandsController < ApplicationController
       def invoke
+        Chronic.time_class = Time.zone
+
         render command_response.data
       end
 

@@ -17,6 +17,7 @@ module SlashCommand
       HELP
 
       NO_TIME_ENTRIES = "There’s no time entries. Please, use `/tt in NOTE` to start the timer."
+      CURRENT_TIME_ENTRY = "You have been working on \"%{note}\"."
       ACTIVITY_RESTARTED = "You have just started working on a new activity. Keep going."
 
       DELIMITERS = "\"'“”‘’`"
@@ -30,11 +31,15 @@ module SlashCommand
       private
 
       def result
-        time_entry = find_time_entry
+        @time_entry = find_time_entry
 
-        return NO_TIME_ENTRIES if time_entry.blank?
+        return NO_TIME_ENTRIES if @time_entry.blank?
 
-        return ACTIVITY_RESTARTED if create(time_entry).persisted?
+        return running_time_entry_message if user.running_activity == @time_entry
+
+        user.stop_running_activity
+
+        return ACTIVITY_RESTARTED if create(@time_entry).persisted?
       end
 
       def find_time_entry
@@ -45,6 +50,10 @@ module SlashCommand
         else
           user.time_entries.last
         end
+      end
+
+      def running_time_entry_message
+        CURRENT_TIME_ENTRY % {note: @time_entry.note}
       end
 
       def create(time_entry)
