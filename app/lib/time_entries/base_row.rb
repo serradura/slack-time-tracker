@@ -1,6 +1,6 @@
 module TimeEntries
   class BaseRow
-    IDS_PATTERN = /(\-i|\-\-ids)/.freeze
+    IDS_PATTERN = /(-i|(--|—)ids)/.freeze
 
     def ids?
       @data =~ IDS_PATTERN

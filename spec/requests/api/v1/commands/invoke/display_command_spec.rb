@@ -40,8 +40,37 @@ RSpec.describe "POST /api/v1/commands/invoke", type: :request do
         expect(response).to have_http_status(200)
       end
 
-      context "with --ids option"do
-        xit "responds list of activities information"
+      context "with ID options" do
+        def test_ids payload_ids
+          payload.text = payload_ids
+          post api_v1_commands_invoke_path, payload.to_h
+          expect(response).to have_http_status(200)
+          expect(response.body.include? "ID").to be true
+        end
+
+        context "--ids option" do
+          it "responds list of activities information" do
+            test_ids "display --ids"
+          end
+        end
+
+        context "—ids options" do
+          it "responds list of activities information" do
+            test_ids "display —ids"
+          end
+        end
+
+        context "--i option" do
+          it "responds list of activities information" do
+            test_ids "display --i"
+          end
+        end
+
+        context "—i options" do
+          it "responds list of activities information" do
+            test_ids "display —i"
+          end
+        end
       end
     end
 
